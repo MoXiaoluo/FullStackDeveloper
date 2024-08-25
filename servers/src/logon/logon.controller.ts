@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LogonService } from './logon.service';
 import { ILogon, User } from './user.entity';
 
@@ -19,7 +12,6 @@ export class LogonController {
   }
 
   @Post('register')
-  @UsePipes(ValidationPipe)
   register(@Body() user: User): Promise<User> {
     return this.logonService.register(user);
   }
