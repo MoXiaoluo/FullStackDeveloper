@@ -1,0 +1,23 @@
+{
+  "name": "fullstackdeveloper",
+  "version": "1.0.0",
+  "description": "Build full stack system",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -C apps dev",
+    "server": "pnpm -C servers dev"
+  },
+  "keywords": [
+    "fullstackdeveloper",
+    "nestjs",
+    "vuejs"
+  ],
+  "bugs": "https://github.com/MoXiaoluo/FullStackDeveloper/issues",
+  "homepage": "https://github.com/MoXiaoluo/FullStackDeveloper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MoXiaoluo/FullStackDeveloper"
+  },
+  "author": "MoXiaoluo",
+  "license": "MIT"
+}
