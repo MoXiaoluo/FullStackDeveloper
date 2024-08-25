@@ -31,17 +31,14 @@ export class LogonService {
    * @returns {User}, create success will return user information
    */
   async register(user: User): Promise<User> {
-    if (await this.findByUsername(user.username)) {
-      throw new BadRequestException('username is duplicate', '101');
-    }
-
     return this.usersRepository.save(user);
   }
 
-  login(logonDetail: ILogon): Promise<User | null> {
-    return this.usersRepository.findOneBy({
+  async login(logonDetail: ILogon): Promise<User | null> {
+    const user = await this.usersRepository.findOneBy({
       username: logonDetail.username,
-      password: logonDetail.password,
     });
+    delete user.password;
+    return user;
   }
 }
