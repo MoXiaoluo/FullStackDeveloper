@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { ILogon, User } from './user.entity';
+import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -13,8 +13,8 @@ export class UserService {
     return this.usersRepository.find();
   }
 
-  findOne(id: number): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
+  findOne(username: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ username });
   }
 
   async remove(id: number): Promise<void> {
@@ -36,12 +36,5 @@ export class UserService {
     }
 
     return this.usersRepository.save(user);
-  }
-
-  login(logonDetail: ILogon): Promise<User | null> {
-    return this.usersRepository.findOneBy({
-      username: logonDetail.username,
-      password: logonDetail.password,
-    });
   }
 }

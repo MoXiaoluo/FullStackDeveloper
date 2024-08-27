@@ -1,22 +1,21 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ILogon, User } from './user.entity';
+import { User } from './user.entity';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/utils/decorator';
 
-@Controller('logon')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post()
-  login(@Body() login: ILogon): Promise<User> {
-    return this.userService.login(login);
-  }
 
   @Post('register')
   register(@Body() user: User): Promise<User> {
     return this.userService.register(user);
   }
 
+  @Public()
   @Get('userList')
+  @UseGuards(AuthGuard)
   findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
