@@ -4,7 +4,7 @@ import { ILogon, User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class LogonService {
+export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
