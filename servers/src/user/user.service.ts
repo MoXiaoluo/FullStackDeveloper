@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -34,7 +35,7 @@ export class UserService {
     if (await this.findByUsername(user.username)) {
       throw new BadRequestException('username is duplicate', '101');
     }
-
+    user.password = await bcrypt.hash(user.password, 10);
     return this.usersRepository.save(user);
   }
 }

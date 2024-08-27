@@ -9,7 +9,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ILogon } from 'src/logon/user.entity';
+import { ILogon } from 'src/user/user.entity';
 import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
