@@ -36,6 +36,8 @@ export class UserService {
       throw new BadRequestException('username is duplicate', '101');
     }
     user.password = await bcrypt.hash(user.password, 10);
-    return this.usersRepository.save(user);
+    const addedUser = await this.usersRepository.save(user);
+    delete addedUser.password;
+    return addedUser;
   }
 }

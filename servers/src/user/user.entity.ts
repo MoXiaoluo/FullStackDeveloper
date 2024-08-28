@@ -1,11 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsNotEmpty, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    description: 'username',
+    example: 'admin',
+  })
   @Column({
     type: 'varchar',
     length: 255,
@@ -18,6 +23,10 @@ export class User {
   })
   username: string;
 
+  @ApiProperty({
+    description: 'password',
+    example: 'admin',
+  })
   @Column()
   @IsNotEmpty({
     message: 'password must not be empty',
