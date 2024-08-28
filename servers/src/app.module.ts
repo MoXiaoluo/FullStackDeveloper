@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
+import { LlmModule } from './llm/llm.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LoggerMiddleware } from './utils/logger.middleware';
     }),
     UserModule,
     AuthModule,
+    LlmModule,
   ],
   controllers: [],
   providers: [],
