@@ -10,6 +10,8 @@ import { TasksModule } from './tasks/tasks.module';
 import { Task } from './tasks/entities/task.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './utils/responseInterceptor';
 
 @Module({
   imports: [
@@ -36,6 +38,10 @@ import { AuthGuard } from './auth/auth.guard';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
     },
   ],
 })

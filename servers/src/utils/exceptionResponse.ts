@@ -3,7 +3,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 export function customExceptionFactory(errors) {
   const errorResponse = {
     statusCode: HttpStatus.BAD_REQUEST,
-    message: 'Validation failed.',
+    message: 'Failed',
     errors: {},
   };
 
