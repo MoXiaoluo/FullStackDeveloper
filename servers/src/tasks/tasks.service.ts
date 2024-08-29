@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Repository } from 'typeorm';
@@ -19,18 +19,20 @@ export class TasksService {
     return this.taksRepository.save(createTaskDto);
   }
 
-  findAll(): Promise<Task[]> {
-    return this.taksRepository.find();
+  async findAll(userId: string): Promise<Task[]> {
+    const user = await this.userService.findById(+userId);
+    return this.taksRepository.find({ where: { user } });
   }
 
-  async findOne(id: number): Promise<Task> {
+  async findOne(id: number, userId: string): Promise<Task> {
+    const user = await this.userService.findById(+userId);
     return await this.taksRepository.findOne({
-      where: { id },
+      where: { id, user },
     });
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto) {
-    const task = await this.findOne(id);
+  async update(id: number, userId: string, updateTaskDto: UpdateTaskDto) {
+    const task = await this.findOne(id, userId);
     if (!task) {
       throw new NotFoundException(`Task #${id} not found`);
     }
@@ -38,8 +40,8 @@ export class TasksService {
     return this.taksRepository.save(task);
   }
 
-  async remove(id: number) {
-    const task = await this.findOne(id);
+  async remove(id: number, userId: string) {
+    const task = await this.findOne(id, userId);
     return this.taksRepository.remove(task);
   }
 }

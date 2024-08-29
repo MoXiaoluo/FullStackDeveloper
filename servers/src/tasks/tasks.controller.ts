@@ -11,7 +11,7 @@ import {
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { IPayloadUser } from 'src/types/global';
 
 @ApiTags('Tasks')
@@ -20,6 +20,7 @@ import { IPayloadUser } from 'src/types/global';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  @ApiBody({ type: CreateTaskDto, description: 'Create Task' })
   @Post()
   create(
     @Body() createTaskDto: CreateTaskDto,
@@ -29,22 +30,36 @@ export class TasksController {
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Request() req: Request & { user: IPayloadUser }) {
+    return this.tasksService.findAll(req.user.sub);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  findOne(
+    @Param('id') id: string,
+    @Request() req: Request & { user: IPayloadUser },
+  ) {
+    return this.tasksService.findOne(+id, req.user.sub);
   }
 
+  @ApiBody({
+    type: UpdateTaskDto,
+    description: 'Update task',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  update(
+    @Param('id') id: string,
+    @Request() req: Request & { user: IPayloadUser },
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.tasksService.update(+id, req.user.sub, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  remove(
+    @Param('id') id: string,
+    @Request() req: Request & { user: IPayloadUser },
+  ) {
+    return this.tasksService.remove(+id, req.user.sub);
   }
 }
