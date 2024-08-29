@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum TaskStatus {
   PENDING = 'pending',
@@ -35,4 +42,12 @@ export class Task {
     default: TaskStatus.PENDING,
   })
   status: TaskStatus;
+
+  @ManyToOne(() => User, (user) => user.tasks, { eager: false })
+  @JoinColumn({ name: 'userId' })
+  @ApiProperty({
+    description: 'User who created the task',
+    type: () => User,
+  })
+  user: User;
 }

@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { IPayloadUser } from 'src/types/global';
 
 @ApiTags('Tasks')
 @ApiBearerAuth()
@@ -19,8 +21,11 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  create(
+    @Body() createTaskDto: CreateTaskDto,
+    @Request() req: Request & { user: IPayloadUser },
+  ) {
+    return this.tasksService.create(createTaskDto, req.user.sub);
   }
 
   @Get()

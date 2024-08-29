@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsNotEmpty, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Task } from 'src/tasks/entities/task.entity';
 
 @Entity()
 export class User {
@@ -35,6 +36,9 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
 }
 
 export interface ILogon {
