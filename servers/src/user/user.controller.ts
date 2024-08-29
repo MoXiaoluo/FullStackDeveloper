@@ -31,7 +31,6 @@ export class UserController {
   @ApiTags('User')
   @ApiBearerAuth()
   @Get('userList')
-  @UseGuards(AuthGuard)
   async findAll(): Promise<User[]> {
     const users = await this.userService.findAll();
     return users.map((user) => {
