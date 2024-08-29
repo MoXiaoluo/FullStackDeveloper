@@ -2,13 +2,14 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import ollama from 'ollama';
 import { Public } from 'src/utils/decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { ILlmModel } from './entity/llm.entity';
 
 @Controller('llm')
 export class LlmController {
   @ApiTags('LLM')
   @Public()
   @Post('chat')
-  async llmChat(@Body() body: { model: string; content: string }) {
+  async llmChat(@Body() body: ILlmModel) {
     const { model, content } = body;
     const response = await ollama.chat({
       model,
