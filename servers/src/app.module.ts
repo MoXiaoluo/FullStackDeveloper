@@ -12,6 +12,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './utils/responseInterceptor';
+import { AvatarModule } from './avatar/avatar.module';
+import { Avatar } from './avatar/entities/avatar.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,13 +29,18 @@ import { ResponseInterceptor } from './utils/responseInterceptor';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'fullstack',
-      entities: [User, Task],
+      entities: [User, Task, Avatar],
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/static',
     }),
     UserModule,
     AuthModule,
     LlmModule,
     TasksModule,
+    AvatarModule,
   ],
   controllers: [],
   providers: [

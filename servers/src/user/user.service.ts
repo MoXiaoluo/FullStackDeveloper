@@ -3,12 +3,14 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { AvatarService } from 'src/avatar/avatar.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private avatarService: AvatarService,
   ) {}
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
@@ -40,6 +42,8 @@ export class UserService {
       throw new BadRequestException('username is duplicate', '101');
     }
     user.password = await bcrypt.hash(user.password, 10);
+    const avatar = await this.avatarService.create({});
+    user.avatar = avatar;
     const addedUser = await this.usersRepository.save(user);
     delete addedUser.password;
     return addedUser;

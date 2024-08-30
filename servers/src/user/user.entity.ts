@@ -1,7 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { IsNotEmpty, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Task } from 'src/tasks/entities/task.entity';
+import { Avatar } from 'src/avatar/entities/avatar.entity';
 
 @Entity()
 export class User {
@@ -16,8 +24,8 @@ export class User {
     type: 'varchar',
     length: 255,
   })
-  @MinLength(10, {
-    message: 'username length must be gather than 10 characters',
+  @MinLength(5, {
+    message: 'username length must be gather than 5 characters',
   })
   @IsNotEmpty({
     message: 'username must not be empty',
@@ -39,6 +47,10 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
+
+  @OneToOne(() => Avatar)
+  @JoinColumn({ name: 'avatar_id' })
+  avatar: Avatar;
 }
 
 export interface ILogon {
