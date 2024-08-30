@@ -5,11 +5,14 @@ import {
   OneToMany,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { IsNotEmpty, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Task } from 'src/tasks/entities/task.entity';
 import { Avatar } from 'src/avatar/entities/avatar.entity';
+import { Exclude } from 'class-transformer';
+import { Role } from 'src/role/entities/role.entity';
 
 @Entity()
 export class User {
@@ -51,6 +54,10 @@ export class User {
   @OneToOne(() => Avatar)
   @JoinColumn({ name: 'avatar_id' })
   avatar: Avatar;
+
+  // @ManyToOne(() => Role, (role) => role.users)
+  // @JoinColumn({ name: 'role_id' })
+  // role: Role;
 }
 
 export interface ILogon {

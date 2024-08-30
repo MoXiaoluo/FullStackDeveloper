@@ -16,6 +16,8 @@ import { AvatarModule } from './avatar/avatar.module';
 import { Avatar } from './avatar/entities/avatar.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { RoleModule } from './role/role.module';
+import { Role } from './role/entities/role.entity';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { join } from 'path';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'fullstack',
-      entities: [User, Task, Avatar],
+      entities: [User, Task, Avatar, Role],
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
@@ -41,6 +43,7 @@ import { join } from 'path';
     LlmModule,
     TasksModule,
     AvatarModule,
+    RoleModule,
   ],
   controllers: [],
   providers: [

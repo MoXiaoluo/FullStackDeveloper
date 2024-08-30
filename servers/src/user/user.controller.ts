@@ -34,7 +34,6 @@ export class UserController {
   async findAll(): Promise<User[]> {
     const users = await this.userService.findAll();
     return users.map((user) => {
-      delete user.password;
       return user;
     });
   }
