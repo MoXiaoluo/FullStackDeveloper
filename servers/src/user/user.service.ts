@@ -12,8 +12,11 @@ export class UserService {
     private usersRepository: Repository<User>,
     private avatarService: AvatarService,
   ) {}
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll(): Promise<User[]> {
+    const users = await this.usersRepository.find({
+      relations: ['avatar'],
+    });
+    return users;
   }
 
   findOne(username: string): Promise<User | null> {
@@ -21,7 +24,10 @@ export class UserService {
   }
 
   findById(id: number): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: ['avatar'],
+    });
   }
 
   async remove(id: number): Promise<void> {

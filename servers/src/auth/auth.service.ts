@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ILogon } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -13,8 +13,11 @@ export class AuthService {
 
   async signIn(logonDetail: ILogon): Promise<{ access_token: string }> {
     const user = await this.userService.findOne(logonDetail.username);
-    if (await bcrypt.compare(logonDetail.password, user.password)) {
-      throw new UnauthorizedException();
+    if (!(await bcrypt.compare(logonDetail.password, user.password))) {
+      throw new HttpException(
+        'Invalid username or password',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     const payload = { sub: user.id, username: user.username };
     return {
