@@ -55,9 +55,9 @@ export class User {
   @JoinColumn({ name: 'avatar_id' })
   avatar: Avatar;
 
-  // @ManyToOne(() => Role, (role) => role.users)
-  // @JoinColumn({ name: 'role_id' })
-  // role: Role;
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 }
 
 export interface ILogon {

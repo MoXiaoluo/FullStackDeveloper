@@ -51,9 +51,9 @@ export class UserService {
     }
     user.password = await bcrypt.hash(user.password, 10);
     const avatar = await this.avatarService.create({});
-    const role = await this.roleService.findOne(1);
+    const role = await this.roleService.findOne(2);
     user.avatar = avatar;
-    // user.role = role;
+    user.role = role;
     const addedUser = await this.usersRepository.save(user);
     return addedUser;
   }

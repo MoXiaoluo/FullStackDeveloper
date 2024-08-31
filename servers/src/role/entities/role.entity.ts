@@ -41,6 +41,6 @@ export class Role {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // @OneToMany(() => User, (user) => user.role)
-  // users: User[];
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
 }

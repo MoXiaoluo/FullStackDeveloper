@@ -7,5 +7,8 @@ export class CreateRoleDto {
   })
   name?: RoleEnum;
 
-  description?: string;
+  @IsNotEmpty({
+    message: 'Description is required',
+  })
+  description: string;
 }
