@@ -1,13 +1,15 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY } from 'src/utils/decorator';
+import { IS_PUBLIC_KEY, IS_ADMIN } from 'src/utils/decorator';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -19,6 +21,10 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    const isAdmin = this.reflector.getAllAndOverride<boolean>(IS_ADMIN, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -42,8 +48,20 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       request['user'] = payload;
+
+      if (isAdmin && payload.role === 'admin') {
+        return true;
+      } else {
+        throw new HttpException(
+          "you don't have permission",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } catch {
-      throw new UnauthorizedException();
+      throw new HttpException(
+        'Your session has bee expired',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return true;
   }
