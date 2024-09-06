@@ -1,7 +1,11 @@
 <template>
-  <div>Logon</div>
+  <div class="flex items-center justify-center h-screen">
+    <Button>Button</Button>
+  </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import Button from "PrimeVue/button";
+</script>
 
 <style></style>
