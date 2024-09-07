@@ -16,7 +16,7 @@
         <label for="password">Password</label>
       </FloatLabel>
       <div class="flex justify-between mt-3">
-        <Button label="Sign Up" class="p-button-outlined" />
+        <Button label="Sign Up" class="p-button-outlined" @click="logon" />
         <Button label="Register" class="p-button-outlined" />
       </div>
     </div>
@@ -27,10 +27,19 @@
 import Button from "PrimeVue/button";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-
 import Password from "primevue/password";
 
 import { ref } from "vue";
+import { logonApi } from "@/apis/logon";
+
+const logon = async () => {
+  const data = {
+    username: username.value,
+    password: password.value,
+  };
+  const res = await logonApi(data);
+  console.log(res);
+};
 
 const username = ref("");
 const password = ref("");
