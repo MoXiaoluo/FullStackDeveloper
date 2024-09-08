@@ -5,7 +5,7 @@ import Aura from "@primevue/themes/aura";
 import App from "./App.vue";
 import "./index.css";
 import "primeicons/primeicons.css";
-import { router } from "@/routers/router";
+import router from "@/routers/router";
 import pinia from "@/stores/store";
 
 const app = createApp(App);

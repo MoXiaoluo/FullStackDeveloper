@@ -7,7 +7,7 @@
         <InputGroupAddon>
           <i class="pi pi-user"></i>
         </InputGroupAddon>
-        <InputText placeholder="Username" />
+        <InputText v-model="username" placeholder="Username" />
       </InputGroup>
       <div class="p-2"></div>
       <InputGroup>
@@ -35,18 +35,23 @@ import Password from "primevue/password";
 
 import { ref } from "vue";
 import { logonApi } from "@/apis/logon";
-
-const logon = async () => {
-  const data = {
-    username: username.value,
-    password: password.value,
-  };
-  const res = await logonApi(data);
-  console.log(res);
-};
+import { useTokenStore } from "@/stores/useTokenStore";
+import router from "@/routers/router";
 
 const username = ref("");
 const password = ref("");
+
+const logon = async () => {
+  const userInfo = {
+    username: username.value,
+    password: password.value,
+  };
+  const { data } = await logonApi(userInfo);
+  console.log(data);
+  const { setToken } = useTokenStore();
+  setToken(data.access_token);
+  router.push("/");
+};
 </script>
 
 <style></style>

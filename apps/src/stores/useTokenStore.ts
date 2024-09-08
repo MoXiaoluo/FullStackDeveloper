@@ -13,11 +13,13 @@ export const useTokenStore = defineStore(
       return token.value;
     }
 
-    return { setToken, getToken };
+    return { token, setToken, getToken };
   },
   {
     persist: {
       storage: localStorage,
+      pick: ["token"],
+      debug: true,
     },
   }
 );

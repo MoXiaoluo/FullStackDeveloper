@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomePage from "../pages/Home.vue";
+import { useTokenStore } from "@/stores/useTokenStore";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -14,7 +15,20 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach((to, _, next) => {
+  const { getToken } = useTokenStore();
+  if (to.name === "logon" && getToken()) {
+    next({ name: "home" });
+  } else if (!getToken() && to.name !== "logon") {
+    next({ name: "logon" });
+  } else {
+    next();
+  }
+});
+
+export default router;
