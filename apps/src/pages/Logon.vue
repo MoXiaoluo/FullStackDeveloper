@@ -1,23 +1,26 @@
 <template>
   <div class="flex items-center justify-center h-screen flex-col">
-    <div class="p-4 rounded border-[1px] border-solid border-black">
-      <FloatLabel class="mt-3">
-        <InputText id="username" v-model="username" size="large" />
-        <label for="username">Username</label>
-      </FloatLabel>
+    <div class="p-4 rounded border-[1px] border-solid border-black w-1/3">
+      <h1 class="text-center">Full Stack Developer</h1>
       <div class="p-2"></div>
-      <FloatLabel>
+      <InputGroup>
+        <InputGroupAddon>
+          <i class="pi pi-user"></i>
+        </InputGroupAddon>
+        <InputText placeholder="Username" />
+      </InputGroup>
+      <div class="p-2"></div>
+      <InputGroup>
         <Password
           v-model="password"
-          inputId="password"
+          :feedback="false"
           toggle-mask
-          size="large"
+          placeholder="Password"
         />
-        <label for="password">Password</label>
-      </FloatLabel>
+      </InputGroup>
       <div class="flex justify-between mt-3">
-        <Button label="Sign Up" class="p-button-outlined" @click="logon" />
-        <Button label="Register" class="p-button-outlined" />
+        <Button label="Sign In" class="p-button-outlined" @click="logon" />
+        <Button label="Sing Up" class="p-button-outlined" />
       </div>
     </div>
   </div>
@@ -26,7 +29,8 @@
 <script lang="ts" setup>
 import Button from "PrimeVue/button";
 import InputText from "primevue/inputtext";
-import FloatLabel from "primevue/floatlabel";
+import InputGroup from "primevue/inputgroup";
+import InputGroupAddon from "primevue/inputgroupaddon";
 import Password from "primevue/password";
 
 import { ref } from "vue";
