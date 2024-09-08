@@ -9,13 +9,13 @@
         <router-link to="/logout">Logout</router-link>
       </div>
     </section>
-    <div class="flex h-screen pt-2">
+    <div class="flex pt-2 menu-height">
       <section class="w-[200px]">
-        <div class="card flex justify-center">
+        <div class="flex justify-center menu-height">
           <Menu :model="items" />
         </div>
       </section>
-      <section>Content</section>
+      <section class="px-4">Content</section>
     </div>
   </div>
 </template>
@@ -27,32 +27,22 @@ import Menu from "primevue/menu";
 
 const items = ref([
   {
-    label: "Documents",
     items: [
       {
-        label: "New",
-        icon: "pi pi-plus",
+        label: "Home",
+        icon: "pi pi-home",
       },
       {
-        label: "Search",
+        label: "Dashboard",
         icon: "pi pi-search",
-      },
-    ],
-  },
-  {
-    label: "Profile",
-    items: [
-      {
-        label: "Settings",
-        icon: "pi pi-cog",
-      },
-      {
-        label: "Logout",
-        icon: "pi pi-sign-out",
       },
     ],
   },
 ]);
 </script>
 
-<style scoped></style>
+<style scoped>
+.menu-height {
+  height: calc(100vh - 70px);
+}
+</style>
