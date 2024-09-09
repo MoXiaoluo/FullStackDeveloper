@@ -1,0 +1,21 @@
+{
+  "name": "@moxiaoluo/tools",
+  "version": "1.0.1",
+  "description": "tools of js",
+  "main": "./dist/index.js",
+  "publishConfig": {
+    "name": "@moxiaoluo/tools",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "MoXiaoluo",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.2.4"
+  }
+}
