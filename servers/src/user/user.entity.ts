@@ -50,7 +50,7 @@ export class User {
   @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
 
-  @OneToOne(() => Avatar)
+  @OneToOne(() => Avatar, { cascade: ['remove'] })
   @JoinColumn({ name: 'avatar_id' })
   avatar: Avatar;
 

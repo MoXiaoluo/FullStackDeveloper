@@ -46,19 +46,26 @@ export class UserService {
     //   relations: ['avatar', 'role'],
     // });
 
-    const user = this.usersRepository
+    const user = await this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.avatar', 'avatar')
       .leftJoinAndSelect('user.role', 'role')
       .select(['user.username', 'user.isActive', 'avatar.url', 'role.name'])
       .where('user.id = :id', { id })
-      .getOne();
+      .getMany();
 
-    return user;
+    return user[0];
   }
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+  async deleteById(id: number): Promise<void> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['avatar'],
+    });
+    if (user) {
+      await this.usersRepository.delete(id);
+      await this.avatarService.remove(user.avatar.id);
+    }
   }
 
   findByUsername(username: string): Promise<User | null> {
