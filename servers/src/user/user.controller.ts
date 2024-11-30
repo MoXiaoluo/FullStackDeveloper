@@ -21,6 +21,10 @@ export class UserController {
     status: 400,
     description: 'username is duplicated',
   })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+  })
   @Public()
   @Post('register')
   register(@Body() user: User): Promise<User> {
@@ -28,6 +32,14 @@ export class UserController {
   }
 
   @ApiTags('User')
+  @ApiResponse({
+    status: 200,
+    description: 'The user list has been successfully retrieved',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+  })
   @ApiBearerAuth()
   @Get('userList')
   @Auth()

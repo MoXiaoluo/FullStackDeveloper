@@ -40,6 +40,13 @@ export class UserService {
     //return this.usersRepository.findOneBy({ username });
   }
 
+  async findByIdAllInformation(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: ['avatar', 'role'],
+    });
+  }
+
   async findById(id: number): Promise<User | null> {
     // return this.usersRepository.findOne({
     //   where: { id },
