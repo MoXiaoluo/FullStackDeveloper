@@ -15,9 +15,20 @@ export class UserService {
     private roleService: RoleService,
   ) {}
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find({
-      relations: ['avatar', 'role'],
-    });
+    // const users = await this.usersRepository.find({
+    //   relations: ['avatar', 'role'],
+    // });
+    // use querybuilder to query some information
+    // const users = await this.usersRepository.query(
+    //   'SELECT username, isActive FROM user LEFT JOIN avatar ON user.avatar_id = avatar.id LEFT JOIN role ON user.role_id = role.id',
+    // );
+
+    const users = await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.role', 'role')
+      .select(['user.username', 'user.isActive', 'avatar.url', 'role.name'])
+      .getMany();
     return users;
   }
 
@@ -29,11 +40,21 @@ export class UserService {
     //return this.usersRepository.findOneBy({ username });
   }
 
-  findById(id: number): Promise<User | null> {
-    return this.usersRepository.findOne({
-      where: { id },
-      relations: ['avatar', 'role'],
-    });
+  async findById(id: number): Promise<User | null> {
+    // return this.usersRepository.findOne({
+    //   where: { id },
+    //   relations: ['avatar', 'role'],
+    // });
+
+    const user = this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.role', 'role')
+      .select(['user.username', 'user.isActive', 'avatar.url', 'role.name'])
+      .where('user.id = :id', { id })
+      .getOne();
+
+    return user;
   }
 
   async remove(id: number): Promise<void> {
@@ -58,7 +79,8 @@ export class UserService {
     const role = await this.roleService.findOne(2);
     user.avatar = avatar;
     user.role = role;
-    const addedUser = await this.usersRepository.save(user);
-    return addedUser;
+    const savedUser = await this.usersRepository.save(user);
+    const newUser = this.findById(savedUser.id);
+    return newUser;
   }
 }

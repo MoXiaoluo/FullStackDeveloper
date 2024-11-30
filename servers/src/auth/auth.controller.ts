@@ -5,13 +5,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UseGuards,
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ILogon } from 'src/user/user.entity';
-import { AuthGuard } from './auth.guard';
-import { Public } from 'src/utils/decorator';
+import { Auth, Public } from 'src/utils/decorator';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
@@ -28,7 +26,11 @@ export class AuthController {
 
   @ApiTags('Auth')
   @Get('profile')
+  @Auth()
   getProfile(@Request() req) {
-    return req.user;
+    return {
+      username: req.user.username,
+      role: req.user.role,
+    };
   }
 }

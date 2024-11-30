@@ -9,7 +9,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY, IS_ADMIN } from 'src/utils/decorator';
+import { IS_PUBLIC_KEY, IS_AUTH } from 'src/utils/decorator';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    const isAdmin = this.reflector.getAllAndOverride<boolean>(IS_ADMIN, [
+    const isAuth = this.reflector.getAllAndOverride<boolean>(IS_AUTH, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -49,13 +49,10 @@ export class AuthGuard implements CanActivate {
       // so that we can access it in our route handlers
       request['user'] = payload;
 
-      if (isAdmin && payload.role === 'admin') {
+      if (isAuth) {
         return true;
       } else {
-        throw new HttpException(
-          "you don't have permission",
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new HttpException("you didn't logon yet", HttpStatus.BAD_REQUEST);
       }
     } catch {
       throw new HttpException(
@@ -63,7 +60,6 @@ export class AuthGuard implements CanActivate {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

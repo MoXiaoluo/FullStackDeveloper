@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { Public } from 'src/utils/decorator';
+import { Auth, Public } from 'src/utils/decorator';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
@@ -31,10 +31,15 @@ export class UserController {
   @ApiTags('User')
   @ApiBearerAuth()
   @Get('userList')
+  @Auth()
   async findAll(): Promise<User[]> {
     const users = await this.userService.findAll();
     return users.map((user) => {
       return user;
     });
+  }
+
+  async findById(id: string): Promise<User> {
+    return this.userService.findById(+id);
   }
 }
